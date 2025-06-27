@@ -1,8 +1,577 @@
-#custom-css {
-  font-family: monospace;
-  background-image: url('/placeholder.png');
+/* Critical Layout Fixes - Add to top of file for priority */
+
+/* Root admin container */
+html,
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 100% !important;
 }
 
-#custom-css::after {
-  content: 'custom-css';
+/* Payload root container */
+#app,
+.app,
+[data-payload-root] {
+  display: flex !important;
+  min-height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Force proper layout structure */
+.template-default {
+  display: flex !important;
+  width: 100% !important;
+  min-height: 100vh !important;
+  position: relative !important;
+}
+
+/* Navigation sidebar */
+.template-default .nav {
+  flex: 0 0 var(--nav-width) !important;
+  width: var(--nav-width) !important;
+  min-width: var(--nav-width) !important;
+  max-width: var(--nav-width) !important;
+  height: 100vh !important;
+  position: sticky !important;
+  top: 0 !important;
+  left: 0 !important;
+  overflow-y: auto !important;
+  background-color: var(--theme-elevation-100) !important;
+  border-right: 1px solid var(--theme-elevation-200) !important;
+  z-index: 100 !important;
+}
+
+/* Main content area */
+.template-default .template-default__wrap {
+  flex: 1 !important;
+  width: calc(100% - var(--nav-width)) !important;
+  min-height: 100vh !important;
+  margin-left: 0 !important;
+  padding: var(
+    --page-padding
+  ) !important; /* Use CSS custom property from globals.css */
+  overflow-x: hidden !important;
+}
+
+:root,
+[data-theme="light"],
+.payload-admin {
+  /* Variables */
+  --theme-bg: var(--theme-elevation-0);
+  --theme-input-bg: var(--theme-elevation-0);
+  --theme-text: var(--theme-elevation-800);
+  --theme-overlay: rgba(5, 5, 5, 0.5);
+  --font-body: "Suisse Intl", system-ui;
+  --font-mono: monospace;
+  --font-serif: "Merriweather", serif;
+  --style-radius-s: 0;
+  --style-radius-m: 0;
+  --style-radius-l: 0;
+  --nav-width: 275px;
+
+  /* Inherit page padding from globals.css */
+  --page-padding: 5vh;
+
+  /* Theme Elevation Colors (Light Mode) */
+  --theme-elevation-0: #ffffff;
+  --theme-elevation-50: #fafafa;
+  --theme-elevation-100: #f5f5f5;
+  --theme-elevation-150: #f0f0f0;
+  --theme-elevation-200: #e5e5e5;
+  --theme-elevation-250: #d9d9d9;
+  --theme-elevation-300: #cccccc;
+  --theme-elevation-400: #b3b3b3;
+  --theme-elevation-500: #999999;
+  --theme-elevation-600: #808080;
+  --theme-elevation-700: #666666;
+  --theme-elevation-800: #4d4d4d;
+  --theme-elevation-850: #404040;
+  --theme-elevation-900: #333333;
+  --theme-elevation-950: #1a1a1a;
+  --theme-elevation-1000: #000000;
+
+  /* Color Shades */
+  --color-base-0: #ffffff;
+  --color-base-50: #fff4f4;
+  --color-base-100: #ffe9ea;
+  --color-base-150: #ffdedf;
+  --color-base-200: #ffd3d4;
+  --color-base-250: #ffc9ca;
+  --color-base-300: #ffbebf;
+  --color-base-350: #ffb3b4;
+  --color-base-400: #ffa8a9;
+  --color-base-450: #ff9d9f;
+  --color-base-500: #f65e61;
+  --color-base-550: #e5575a;
+  --color-base-600: #d35053;
+  --color-base-650: #c14a4c;
+  --color-base-700: #b04345;
+  --color-base-750: #9e3c3e;
+  --color-base-800: #8d3637;
+  --color-base-850: #7b2f30;
+  --color-base-900: #6a2829;
+  --color-base-950: #582122;
+  --color-success-0: #ffffff;
+  --color-success-50: #f1faf6;
+  --color-success-100: #e3f5ed;
+  --color-success-150: #d5efe4;
+  --color-success-200: #c8eadb;
+  --color-success-250: #bae5d3;
+  --color-success-300: #ace0ca;
+  --color-success-350: #9edac1;
+  --color-success-400: #90d5b8;
+  --color-success-450: #82d0af;
+  --color-success-500: #34ad7a;
+  --color-success-550: #30a071;
+  --color-success-600: #2d9468;
+  --color-success-650: #298860;
+  --color-success-700: #257b57;
+  --color-success-750: #226f4e;
+  --color-success-800: #1e6346;
+  --color-success-850: #1a563d;
+  --color-success-900: #164a34;
+  --color-success-950: #133e2b;
+  --color-warning-0: #ffffff;
+  --color-warning-50: #fff9ed;
+  --color-warning-100: #fff3dc;
+  --color-warning-150: #ffeeca;
+  --color-warning-200: #ffe8b9;
+  --color-warning-250: #ffe2a7;
+  --color-warning-300: #ffdc95;
+  --color-warning-350: #ffd684;
+  --color-warning-400: #ffd172;
+  --color-warning-450: #ffcb61;
+  --color-warning-500: #f6a500;
+  --color-warning-550: #e59900;
+  --color-warning-600: #d38e00;
+  --color-warning-650: #c18200;
+  --color-warning-700: #b07600;
+  --color-warning-750: #9e6a00;
+  --color-warning-800: #8d5e00;
+  --color-warning-850: #7b5300;
+  --color-warning-900: #6a4700;
+  --color-warning-950: #583b00;
+  --color-error-0: #ffffff;
+  --color-error-50: #fff3f1;
+  --color-error-100: #ffe8e2;
+  --color-error-150: #ffdcd4;
+  --color-error-200: #ffd0c6;
+  --color-error-250: #ffc5b8;
+  --color-error-300: #ffb9a9;
+  --color-error-350: #ffad9b;
+  --color-error-400: #ffa28d;
+  --color-error-450: #ff967f;
+  --color-error-500: #f6532e;
+  --color-error-550: #e54d2b;
+  --color-error-600: #d34728;
+  --color-error-650: #c14124;
+  --color-error-700: #b03b21;
+  --color-error-750: #9e351e;
+  --color-error-800: #8d2f1a;
+  --color-error-850: #7b2a17;
+  --color-error-900: #6a2414;
+  --color-error-950: #581e11;
+  --color-accent-0: #ffffff;
+  --color-accent-50: #fbedef;
+  --color-accent-100: #f8dcdf;
+  --color-accent-150: #f4cacf;
+  --color-accent-200: #f1b9be;
+  --color-accent-250: #eda7ae;
+  --color-accent-300: #ea959e;
+  --color-accent-350: #e6848e;
+  --color-accent-400: #e3727e;
+  --color-accent-450: #df616e;
+  --color-accent-500: #c50014;
+  --color-accent-550: #b70013;
+  --color-accent-600: #a90011;
+  --color-accent-650: #9b0010;
+  --color-accent-700: #8d000e;
+  --color-accent-750: #7f000d;
+  --color-accent-800: #71000c;
+  --color-accent-850: #62000a;
+  --color-accent-900: #540009;
+  --color-accent-950: #460007;
+
+  /* Theme Accent Colors */
+  --theme-accent-0: var(--color-accent-0);
+  --theme-accent-50: var(--color-accent-50);
+  --theme-accent-100: var(--color-accent-100);
+  --theme-accent-150: var(--color-accent-150);
+  --theme-accent-200: var(--color-accent-200);
+  --theme-accent-250: var(--color-accent-250);
+  --theme-accent-300: var(--color-accent-300);
+  --theme-accent-350: var(--color-accent-350);
+  --theme-accent-400: var(--color-accent-400);
+  --theme-accent-450: var(--color-accent-450);
+  --theme-accent-500: var(--color-accent-500);
+  --theme-accent-550: var(--color-accent-550);
+  --theme-accent-600: var(--color-accent-600);
+  --theme-accent-650: var(--color-accent-650);
+  --theme-accent-700: var(--color-accent-700);
+  --theme-accent-750: var(--color-accent-750);
+  --theme-accent-800: var(--color-accent-800);
+  --theme-accent-850: var(--color-accent-850);
+  --theme-accent-900: var(--color-accent-900);
+  --theme-accent-950: var(--color-accent-950);
+  --theme-accent-1000: var(--color-accent-1000);
+}
+
+/* Nav Button - Enhanced */
+.hamburger__wrapper {
+  background-color: var(--theme-elevation-100);
+  border: 1px solid var(--theme-elevation-200);
+  position: fixed !important;
+  top: 1rem !important;
+  left: 1rem !important;
+  z-index: 10001 !important;
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .hamburger__wrapper {
+    display: block !important;
+  }
+}
+
+.hamburger:before {
+  background-color: var(--theme-elevation-100);
+  border: 1px solid var(--theme-elevation-200);
+}
+.hamburger:after {
+  background-color: var(--theme-elevation-100);
+  border: 1px solid var(--theme-elevation-200);
+}
+
+/* Nav Group Toggle (empty) */
+.nav-group__toggle {
+}
+
+/* Nav Group Icon */
+.nav-group__indicator svg .stroke {
+  stroke: var(--theme-elevation-700);
+}
+
+/* Nav Group Label */
+.nav-group__label {
+  color: var(--theme-elevation-700);
+}
+
+/* Dashboard Card Labels */
+.dashboard__label {
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+/* Dashboard Card */
+.card {
+  background-color: var(--theme-elevation-100) !important;
+  border: 1px solid var(--theme-elevation-200) !important;
+}
+
+/* Dashboard Card Title */
+.card__title {
+  font-family: Impact;
+}
+
+/* Primary Button */
+.btn--style-primary {
+  background-color: var(--theme-elevation-900) !important;
+}
+
+/* Pill styling */
+.pill {
+  background-color: var(--theme-elevation-200);
+  border-radius: 20px;
+  padding: 0.25rem 0.75rem;
+}
+
+/* Input Field */
+.field-type.text:not(.has-many) input {
+  border: 1px solid var(--theme-elevation-200);
+}
+
+/* Document Header styling */
+.doc-header__title {
+  color: var(--theme-elevation-800);
+  font-weight: bold;
+}
+
+/* Toast Notifications */
+.Toastify .Toastify__toast--success {
+  background-color: var(--color-success-500) !important;
+  color: var(--color-success-0) !important;
+}
+
+.Toastify .Toastify__toast--success .Toastify__progress-bar {
+  background-color: var(--color-success-700) !important;
+}
+
+.Toastify .Toastify__close-button--success {
+  color: var(--color-success-0) !important;
+}
+
+.Toastify .Toastify__toast--error {
+  background-color: var(--color-error-500) !important;
+  color: var(--color-error-0) !important;
+}
+
+.Toastify .Toastify__toast--error .Toastify__progress-bar {
+  background-color: var(--color-error-700) !important;
+}
+
+.Toastify .Toastify__close-button--error {
+  color: var(--color-error-0) !important;
+}
+
+/* Collapsible */
+.collapsible {
+  border-radius: 4px;
+}
+
+/* Collapsible Content */
+.collapsible__content {
+  background-color: var(--theme-elevation-0);
+}
+
+/* Collapsible Toggle */
+.collapsible--style-default > .collapsible__toggle-wrap .collapsible__toggle {
+  background-color: var(--theme-elevation-50);
+}
+
+/* Collapsible Style Default */
+.collapsible--style-default {
+  border: 1px solid var(--theme-elevation-200);
+}
+
+/* Table Row Odd */
+.table tbody tr:nth-child(odd) {
+  background-color: var(--theme-elevation-50);
+}
+
+/* Search and List Controls */
+.list-controls__wrap {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--theme-elevation-200);
+}
+
+.search-filter__input {
+  border: 1px solid var(--theme-elevation-200);
+  border-radius: 4px;
+  padding: 0.5rem;
+  background-color: var(--theme-elevation-0);
+}
+
+html[data-theme="dark"],
+[data-theme="dark"] .payload-admin {
+  /* Dark Theme Colors */
+  --theme-accent-0: var(--color-accent-900);
+  --theme-accent-50: var(--color-accent-850);
+  --theme-accent-100: var(--color-accent-800);
+  --theme-accent-150: var(--color-accent-750);
+  --theme-accent-200: var(--color-accent-700);
+  --theme-accent-250: var(--color-accent-650);
+  --theme-accent-300: var(--color-accent-600);
+  --theme-accent-350: var(--color-accent-550);
+  --theme-accent-400: var(--color-accent-450);
+  --theme-accent-450: var(--color-accent-400);
+  --theme-accent-550: var(--color-accent-350);
+  --theme-accent-600: var(--color-accent-300);
+  --theme-accent-650: var(--color-accent-250);
+  --theme-accent-700: var(--color-accent-200);
+  --theme-accent-750: var(--color-accent-150);
+  --theme-accent-800: var(--color-accent-100);
+  --theme-accent-850: var(--color-accent-50);
+  --theme-accent-900: var(--color-accent-0);
+  --theme-accent-950: var(--color-accent-0);
+  --theme-accent-1000: var(--color-accent-0);
+
+  /* Dark Theme Elevation Colors */
+  --theme-elevation-0: #1a1a1a;
+  --theme-elevation-50: #2d2d2d;
+  --theme-elevation-100: #404040;
+  --theme-elevation-150: #4d4d4d;
+  --theme-elevation-200: #666666;
+  --theme-elevation-250: #737373;
+  --theme-elevation-300: #808080;
+  --theme-elevation-400: #999999;
+  --theme-elevation-500: #b3b3b3;
+  --theme-elevation-600: #cccccc;
+  --theme-elevation-700: #d9d9d9;
+  --theme-elevation-800: #e5e5e5;
+  --theme-elevation-850: #f0f0f0;
+  --theme-elevation-900: #f5f5f5;
+  --theme-elevation-950: #fafafa;
+  --theme-elevation-1000: #ffffff;
+}
+
+/* Essential Payload Admin Layout Fixes */
+
+/* Main admin wrapper */
+.template-default {
+  display: flex !important;
+  min-height: 100vh !important;
+}
+
+/* Navigation sidebar - Unified styles */
+.nav,
+.template-default .nav {
+  flex: 0 0 var(--nav-width) !important;
+  width: var(--nav-width) !important;
+  min-width: var(--nav-width) !important;
+  max-width: var(--nav-width) !important;
+  height: 100vh !important;
+  position: sticky !important;
+  top: 0 !important;
+  left: 0 !important;
+  overflow-y: auto !important;
+  z-index: 100 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex-shrink: 0 !important;
+
+  /* Theme-based styling */
+  [data-theme="dark"] & {
+    background: var(--color-accent-800) !important;
+    border-right: 1px solid var(--color-accent-950) !important;
+  }
+  [data-theme="light"] & {
+    background: var(--color-accent-200) !important;
+    border-right: 1px solid var(--color-accent-150) !important;
+  }
+  
+  /* Default fallback */
+  background-color: var(--theme-elevation-100) !important;
+  border-right: 1px solid var(--theme-elevation-200) !important;
+}
+
+/* Main content area */
+.template-default__wrap {
+  margin-left: var(--nav-width) !important;
+  width: calc(100% - var(--nav-width)) !important;
+  min-height: 100vh !important;
+  flex: 1 !important;
+  padding: 5vh !important; /* Match globals.css --page-padding */
+}
+
+/* Admin panel layout */
+.payload-admin-bar {
+  display: none !important;
+}
+
+/* Ensure proper content spacing */
+.doc-header,
+.gutter--left,
+.gutter--right {
+  padding-left: 0 !important; /* Remove since parent has padding */
+  padding-right: 0 !important; /* Remove since parent has padding */
+}
+
+/* Fix dashboard layout */
+.dashboard {
+  padding: 0 !important; /* Remove default padding since we're adding it to parent */
+}
+
+/* Collection view layout */
+.collection-list {
+  padding: 0 !important; /* Remove default padding since we're adding it to parent */
+}
+
+/* Form layouts */
+.render-fields {
+  max-width: none !important;
+  padding: 0 !important; /* Remove default padding */
+}
+
+/* Mobile responsiveness for admin layout */
+@media (max-width: 768px) {
+  .nav {
+    width: 100% !important;
+    position: relative !important;
+    height: auto !important;
+  }
+
+  .template-default__wrap {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+}
+
+/* Fix for nav toggle button on mobile */
+.nav-toggler {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .nav-toggler {
+    display: block !important;
+  }
+}
+
+/* Ensure proper stacking context */
+.template-default {
+  position: relative !important;
+}
+
+/* Fix for overlay issues */
+.modal-container,
+.drawer {
+  z-index: 2000 !important;
+}
+
+/* Additional Layout Fixes for Payload v3+ */
+
+/* Fix flexbox layout issues */
+.app__wrap,
+.payload-admin-container,
+.layout {
+  display: flex !important;
+  flex-direction: row !important;
+  width: 100% !important;
+  min-height: 100vh !important;
+}
+
+/* Ensure sidebar behaves as a proper aside */
+aside.nav,
+.nav[role="navigation"],
+.admin-nav {
+  display: flex !important;
+  flex-direction: column !important;
+  position: relative !important;
+  flex-shrink: 0 !important;
+}
+
+/* Main content wrapper */
+main,
+.main-content,
+.admin-content {
+  flex: 1 !important;
+  min-width: 0 !important;
+  overflow-x: auto !important;
+}
+
+/* Responsive padding adjustments for admin pages */
+
+/* Mobile adjustments for page padding */
+@media (max-width: 768px) {
+  .template-default__wrap {
+    padding: 2vh !important; /* Smaller padding on mobile */
+  }
+
+  .nav {
+    width: 100% !important;
+    position: relative !important;
+    height: auto !important;
+  }
+
+  .template-default__wrap {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+}
+
+/* Extra large screens - maintain comfortable padding */
+@media (min-width: 1200px) {
+  .template-default__wrap {
+    padding: 5vh 8vh !important; /* More horizontal padding on large screens */
+  }
 }
